@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кабинет Mugalim Academy</title>
+<meta name="theme-color" content="#D6336C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+:root {
+  --bg: #F4F1EA; --surface: #FFFFFF; --ink: #17151A; --muted: #6B6672; --line: #E3DED3;
+  --accent: #D6336C; --accent-soft: #FBE3EC;
+  --book: #1F7A55; --book-soft: #DDF0E6;
+  --edu: #B4531B; --edu-soft: #F8E5D6;
+  --eng: #2456D6; --eng-soft: #DFE8FB;
+  --bad: #B3261E;
+  --font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151318; --surface: #1F1C24; --ink: #F3F0F7; --muted: #A29CAD; --line: #332F3B;
+    --accent: #FF6FA0; --accent-soft: #3A1F2D;
+    --book: #5FD1A0; --book-soft: #1B3328; --edu: #F3A06A; --edu-soft: #3A2616; --eng: #8DB0FF; --eng-soft: #1D2A4A;
+    --bad: #FF8A80; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151318; --surface: #1F1C24; --ink: #F3F0F7; --muted: #A29CAD; --line: #332F3B;
+  --accent: #FF6FA0; --accent-soft: #3A1F2D;
+  --book: #5FD1A0; --book-soft: #1B3328; --edu: #F3A06A; --edu-soft: #3A2616; --eng: #8DB0FF; --eng-soft: #1D2A4A;
+  --bad: #FF8A80; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font); font-size: 15px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: max(16px, env(safe-area-inset-top, 0px)); padding-bottom: 110px;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+[hidden] { display: none !important; }
+.app { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { background: var(--ink); color: var(--bg); font-weight: 800; font-size: 11px; letter-spacing: .14em; padding: 8px 12px; border-radius: 9px; }
+.seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 11px; padding: 3px; gap: 2px; }
+.seg button { border: 0; background: transparent; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.seg.wide { display: flex; }
+.seg.wide button { flex: 1; padding: 9px 12px; font-size: 14px; }
+.seg.wide button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.seg.scroll { display: flex; overflow-x: auto; scrollbar-width: none; }
+.seg.scroll button { flex: none; }
+
+.hero { --c: var(--accent); --cs: var(--accent-soft); position: relative; overflow: hidden; border-radius: 16px; background: var(--cs); min-height: 116px; padding: 12px; }
+.hero > svg { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--c); opacity: .5; }
+.hero .top { position: relative; }
+
+.who summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.who summary::-webkit-details-marker { display: none; }
+h1 { margin: 0; font-size: 26px; line-height: 1.12; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; overflow-wrap: anywhere; }
+.caret { color: var(--muted); font-size: 12px; flex: none; }
+.who[open] .caret { transform: rotate(180deg); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { font-size: 12px; font-weight: 600; padding: 4px 9px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.chip.eng { background: var(--eng-soft); border-color: transparent; color: var(--eng); }
+.chip.book { background: var(--book-soft); border-color: transparent; color: var(--book); }
+.chip.edu { background: var(--edu-soft); border-color: transparent; color: var(--edu); }
+.chip.warn { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+.panel { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 10px; }
+.kv { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.kv span:first-child { color: var(--muted); }
+.btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.ghost { border: 1px solid var(--line); background: transparent; border-radius: 9px; padding: 8px 12px; font-size: 13px; font-weight: 600; }
+.solid { border: 0; background: var(--ink); color: var(--bg); border-radius: 10px; padding: 10px 16px; font-weight: 700; }
+.solid.pink { background: var(--accent); color: #fff; }
+.danger { border-color: var(--bad); color: var(--bad); }
+
+.ring { display: block; width: 148px; height: 148px; margin: 0 auto; }
+.ring circle { fill: none; stroke-width: 12; stroke-linecap: round; }
+.ring .trk { stroke: var(--surface); }
+.ring .arc { stroke: var(--c); transition: stroke-dashoffset .6s ease; }
+.ring text { font-family: var(--font); font-size: 30px; font-weight: 800; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.pending.c { text-align: center; font-size: 15px; font-weight: 700; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--surface); }
+.stats > div { text-align: center; padding: 10px 4px 2px; min-width: 0; }
+.stats > div + div { border-left: 1px solid var(--surface); }
+.stats b { display: block; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stats span { font-size: 12px; color: var(--muted); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.kicker { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.card h2 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.stack { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.c-book { --c: var(--book); --cs: var(--book-soft); }
+.c-edu { --c: var(--edu); --cs: var(--edu-soft); }
+.c-eng { --c: var(--eng); --cs: var(--eng-soft); }
+.total { background: var(--cs); border-color: transparent; }
+.total .kicker { color: var(--c); }
+.sub, .note { font-size: 13px; color: var(--muted); margin: 0; }
+
+.row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(72px, 38%) 40px; align-items: center; gap: 12px; }
+.bar { height: 8px; background: var(--cs); border-radius: 99px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--c); border-radius: 99px; }
+.val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+.val.none { color: var(--muted); font-weight: 500; }
+.pmrow { display: flex; gap: 8px; flex-wrap: wrap; }
+.pm { min-width: 56px; text-align: center; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); font-weight: 700; font-size: 14px; }
+.pm.plus { background: var(--book-soft); color: var(--book); border-color: transparent; }
+.pm.minus { background: var(--accent-soft); color: var(--bad); border-color: transparent; }
+.pm small { display: block; font-size: 10px; font-weight: 600; color: var(--muted); }
+
+.day { display: grid; gap: 2px; }
+.dayhead { display: flex; align-items: center; gap: 8px; padding: 2px 2px 6px; }
+.dayhead h3 { margin: 0; font-size: 14px; font-weight: 700; }
+.today { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+.slot { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+.time { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; line-height: 1.25; }
+.time small { display: block; color: var(--muted); font-weight: 500; font-size: 13px; }
+.slot .t { font-weight: 600; }
+.tag { display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 99px; }
+.tag.eng { background: var(--eng-soft); color: var(--eng); }
+.tag.be { background: var(--book-soft); color: var(--book); }
+.free { font-size: 13px; color: var(--muted); padding: 8px 0; border-top: 1px solid var(--line); }
+.day.is-today { background: var(--accent-soft); border-radius: 12px; padding: 8px 12px 4px; margin: 0 -12px; }
+.day.is-today .slot, .day.is-today .free { border-color: transparent; }
+.cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 700; padding: 13px 18px; border-radius: 12px; }
+.idp-text { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+
+.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; background: var(--surface); border-top: 1px solid var(--line);
+  padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-right, 0px)); }
+.tabs-in { max-width: 760px; margin: 0 auto; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 2px; }
+.tabs button { border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 2px; border-radius: 10px; font-size: 11px; font-weight: 600; color: var(--muted); min-width: 0; }
+.tabs button span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tabs button[aria-current="page"] { color: var(--accent); background: var(--accent-soft); }
+.tabs svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.toast { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); font-size: 13px; font-weight: 600; padding: 9px 14px; border-radius: 10px; max-width: calc(100vw - 32px); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 9; }
+.toast.on { opacity: 1; }
+
+/* формы */
+label.f { display: grid; gap: 4px; font-size: 13px; color: var(--muted); font-weight: 600; }
+input.t, select.t, textarea.t { width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 11px 12px; font-size: 16px; color: var(--ink); }
+textarea.t { min-height: 120px; resize: vertical; }
+.login { margin-top: 8px; }
+.err { color: var(--bad); font-size: 13px; font-weight: 600; min-height: 18px; margin: 0; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+
+/* таблица оценок */
+.gwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); -webkit-overflow-scrolling: touch; }
+table.g { border-collapse: separate; border-spacing: 0; font-size: 13px; min-width: 100%; }
+.g th, .g td { padding: 6px 4px; text-align: center; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.g th { font-size: 11px; color: var(--muted); font-weight: 700; background: var(--surface); }
+.g th:first-child, .g td:first-child { position: sticky; left: 0; z-index: 1; background: var(--surface); text-align: left; padding-left: 10px; min-width: 128px; max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+.g tr:last-child td { border-bottom: 0; }
+.g td:first-child button { border: 0; background: transparent; padding: 0; text-align: left; font-weight: 600; font-size: 13px; max-width: 136px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+.g td.tot { font-weight: 800; font-variant-numeric: tabular-nums; padding: 6px 10px; }
+input.cell { width: 46px; text-align: center; border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 7px 2px; font-size: 15px; font-variant-numeric: tabular-nums; }
+input.cell:disabled { background: transparent; border-color: transparent; color: var(--ink); opacity: .8; }
+.sep { border-left: 2px solid var(--line); }
+.dim { opacity: .55; }
+.list { display: grid; gap: 8px; }
+.li { display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; width: 100%; text-align: left; }
+.li .n { font-weight: 600; overflow-wrap: anywhere; }
+.li .m { font-size: 12px; color: var(--muted); }
+.mini { display: flex; gap: 6px; flex: none; }
+.mini span { font-size: 11px; font-weight: 700; padding: 3px 7px; border-radius: 99px; font-variant-numeric: tabular-nums; }
+.mini .b { background: var(--book-soft); color: var(--book); } .mini .e { background: var(--edu-soft); color: var(--edu); } .mini .g { background: var(--eng-soft); color: var(--eng); }
+.back { align-self: flex-start; }
+@media (prefers-reduced-motion: reduce) { .ring .arc, .toast { transition: none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero" id="hero">
+    <svg aria-hidden="true" focusable="false"><defs><pattern id="sg" width="48" height="24" patternUnits="userSpaceOnUse"><g fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="0" cy="24" r="22"/><circle cx="0" cy="24" r="15"/><circle cx="0" cy="24" r="8"/><circle cx="48" cy="24" r="22"/><circle cx="48" cy="24" r="15"/><circle cx="48" cy="24" r="8"/><circle cx="24" cy="12" r="22"/><circle cx="24" cy="12" r="15"/><circle cx="24" cy="12" r="8"/></g></pattern></defs><rect width="100%" height="100%" fill="url(#sg)"/></svg>
+    <div class="top">
+      <div class="brand">MUGALIM ACADEMY</div>
+      <div class="seg" role="group" aria-label="Язык / Тіл">
+        <button type="button" data-lang="ru" aria-pressed="true">РУС</button>
+        <button type="button" data-lang="kk" aria-pressed="false">ҚАЗ</button>
+      </div>
+    </div>
+  </div>
+  <details class="who" id="who" hidden>
+    <summary><div><h1 id="name"></h1><div class="chips" id="chips"></div></div><span class="caret" aria-hidden="true">▼</span></summary>
+    <div class="panel" id="panel"></div>
+  </details>
+  <div id="innerbar"></div>
+  <div id="periodbar" class="seg wide" role="group" hidden></div>
+  <main id="view" class="stack"></main>
+</div>
+<nav class="tabs" aria-label="Разделы" id="navwrap" hidden><div class="tabs-in" id="tabs"></div></nav>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+<script>
+/* ===================== настройки ===================== */
+var SB_URL = 'https://yecxhbngayvfjprtvknk.supabase.co';
+var SB_KEY = 'sb_publishable_YiMR1JkefXtb_Nl8Dkbnow_Rx6JaIj4';
+var DOMAIN = 'mugalim.academy';
+var START_PW = '123456';
+
+/* ===================== словарь ===================== */
+var I18N = {
+  ru: {
+    schedule:'Расписание', book:'Книга', edu:'Предмет', eng:'Английский', idp:'IDP', steps:'Шаги',
+    cab:'Кабинет', grades:'Оценки', students:'Студенты', months:'Месяцы',
+    week:'Неделя', examweek:'Экзаменационная неделя', read:'Чтение (Оқу)', talk:'Обсуждение (Талқылау)', test:'Тест', essay:'Эссе', presentation:'Презентация', exam2:'Экзамен 2',
+    etude:'Этюд', ent:'Пробный ЕНТ', attendance:'Посещаемость', exam:'Экзамен', monthExam:'Экзамен месяца',
+    total:'Итог за месяц', weeksLbl:'Недели', examsLbl:'Экзамены', waitExam:'Итог будет после экзамена', noScores:'Оценок пока нет',
+    today:'Сегодня', noClass:'Занятий нет', group:'Группа', login:'Логин', status:'Статус', role:'Роль',
+    changePwd:'Сменить пароль', logout:'Выйти', newPwd:'Новый пароль (от 6 символов)', save:'Сохранить', saved:'Сохранено', cancel:'Отмена',
+    pwdOk:'Пароль изменён', pwdShort:'Пароль слишком короткий',
+    examNote:'4-я неделя месяца экзаменационная. Экзамены проходят в обычное время занятий.',
+    bookOf:'Книга месяца', openNotion:'Открыть мой Notion', idpNoLink:'Ссылка на Notion пока не добавлена. Её добавляет администратор.', idpTitle:'Твоя страница в Notion',
+    idpSite:'IDP', idpEmpty:'Пока пусто. Записи добавляет ментор.',
+    course:'курс', boys:'Парни', girls:'Девочки', grant:'Грант', opportunity:'Возможность', mentorF:'Ментор',
+    active:'Активен', academic_leave:'Академ', left:'Выбыл',
+    admin:'Админ', mentor:'Ментор', teacher:'Учитель английского', student:'Студент',
+    loginTitle:'Вход', username:'Логин', password:'Пароль', enter:'Войти', badLogin:'Неверный логин или пароль', loginHint:'Логин: имя.фамилия латиницей, например aidos.nurlan',
+    loading:'Загрузка…', loadErr:'Не удалось загрузить данные', noRights:'Нет доступа', back:'← Назад',
+    mentorGroup:'Группа ментора', engGroup:'Группа английского', none:'—', search:'Поиск по имени', noStudents:'Студентов нет',
+    rd:'Чт', tk:'Об', et:'Эт', wk:'Нед', sum:'Итог', goal:'Цель — 7 000 шагов в неделю. Плюс — цель выполнена, минус — нет.', stepsWeek:'Неделя',
+    specials:'Особые студенты', locked:'Месяц закрыт: менторы не могут менять оценки', monthLocked:'Месяц закрыт',
+    readonly:'Только просмотр', fixAs:'Править', funding:'Финансирование', subGroup:'Топ', notion:'Ссылка на Notion', courseF:'Курс',
+    resetPw:'Сбросить пароль', resetAsk:'Точно сбросить на стартовый?', resetYes:'Да, сбросить', resetDone:'Пароль сброшен на стартовый',
+    weights:'Вес экзамена, %', wBook:'Книга', wEdu:'Предмет', wEng:'Английский', books:'Книги месяца', bookTitle:'Название', exam2type:'Второй экзамен',
+    lockMonth:'Закрыть месяц (менторы не правят)', adminOnlyNote:'Новых студентов пока добавляет разработчик: создаёт им вход в базе.',
+    badNum:'Нужно число от 0 до 100', saveErr:'Не сохранилось: нет прав или месяц закрыт', plusMinus:'+ / −'
+  },
+  kk: {
+    schedule:'Кесте', book:'Кітап', edu:'Пән', eng:'Ағылшын', idp:'IDP', steps:'Қадам',
+    cab:'Кабинет', grades:'Бағалар', students:'Студенттер', months:'Айлар',
+    week:'Апта', examweek:'Емтихан аптасы', read:'Оқу', talk:'Талқылау', test:'Тест', essay:'Эссе', presentation:'Презентация', exam2:'Емтихан 2',
+    etude:'Этюд', ent:'ҰБТ сынақ', attendance:'Қатысу', exam:'Емтихан', monthExam:'Ай емтиханы',
+    total:'Айлық қорытынды', weeksLbl:'Апталар', examsLbl:'Емтихандар', waitExam:'Қорытынды емтиханнан кейін шығады', noScores:'Әзірге баға жоқ',
+    today:'Бүгін', noClass:'Сабақ жоқ', group:'Топ', login:'Логин', status:'Мәртебе', role:'Рөл',
+    changePwd:'Құпиясөзді өзгерту', logout:'Шығу', newPwd:'Жаңа құпиясөз (кемінде 6 таңба)', save:'Сақтау', saved:'Сақталды', cancel:'Бас тарту',
+    pwdOk:'Құпиясөз өзгертілді', pwdShort:'Құпиясөз тым қысқа',
+    examNote:'Айдың 4-аптасы емтихан аптасы. Емтихан әдеттегі сабақ уақытында өтеді.',
+    bookOf:'Айдың кітабы', openNotion:'Менің Notion бетім', idpNoLink:'Notion сілтемесі әлі қосылмаған. Оны әкімші қосады.', idpTitle:'Notion-дағы жеке бетің',
+    idpSite:'IDP', idpEmpty:'Әзірге бос. Жазбаларды ментор қосады.',
+    course:'курс', boys:'Ұл', girls:'Қыз', grant:'Грант', opportunity:'Мүмкіндік', mentorF:'Ментор',
+    active:'Белсенді', academic_leave:'Академ', left:'Шыққан',
+    admin:'Әкімші', mentor:'Ментор', teacher:'Ағылшын мұғалімі', student:'Студент',
+    loginTitle:'Кіру', username:'Логин', password:'Құпиясөз', enter:'Кіру', badLogin:'Логин немесе құпиясөз қате', loginHint:'Логин: аты.тегі латынша, мысалы aidos.nurlan',
+    loading:'Жүктелуде…', loadErr:'Деректер жүктелмеді', noRights:'Қолжетім жоқ', back:'← Артқа',
+    mentorGroup:'Ментор тобы', engGroup:'Ағылшын тобы', none:'—', search:'Аты бойынша іздеу', noStudents:'Студент жоқ',
+    rd:'Оқ', tk:'Тал', et:'Эт', wk:'Апт', sum:'Қорыт', goal:'Мақсат — аптасына 7 000 қадам. Плюс — орындалды, минус — жоқ.', stepsWeek:'Апта',
+    specials:'Ерекше студенттер', locked:'Ай жабық: менторлар бағаны өзгерте алмайды', monthLocked:'Ай жабық',
+    readonly:'Тек көру', fixAs:'Өзгерту', funding:'Қаржыландыру', subGroup:'Топ', notion:'Notion сілтемесі', courseF:'Курс',
+    resetPw:'Құпиясөзді қалпына келтіру', resetAsk:'Бастапқы құпиясөзге қайтарамыз ба?', resetYes:'Иә, қайтару', resetDone:'Құпиясөз бастапқыға қайтарылды',
+    weights:'Емтихан үлесі, %', wBook:'Кітап', wEdu:'Пән', wEng:'Ағылшын', books:'Айдың кітаптары', bookTitle:'Атауы', exam2type:'Екінші емтихан',
+    lockMonth:'Айды жабу (менторлар өзгертпейді)', adminOnlyNote:'Жаңа студентті әзірге әзірлеуші базада қосады.',
+    badNum:'0-ден 100-ге дейінгі сан керек', saveErr:'Сақталмады: құқық жоқ немесе ай жабық', plusMinus:'+ / −'
+  }
+};
+var DAYS = {
+  ru: ['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье'],
+  kk: ['Дүйсенбі','Сейсенбі','Сәрсенбі','Бейсенбі','Жұма','Сенбі','Жексенбі']
+};
+var ICONS = {
+  schedule: '<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  book: '<path d="M4 5.5C6.5 4.5 9.5 4.5 12 6c2.5-1.5 5.5-1.5 8-.5V19c-2.5-1-5.5-1-8 .5-2.5-1.5-5.5-1.5-8-.5z"/><path d="M12 6v13.5"/>',
+  edu: '<path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/>',
+  eng: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3 3.2 3 13.8 0 17M12 3.5c-3 3.2-3 13.8 0 17"/>',
+  idp: '<path d="M6 20V4M6 5h11l-2 4 2 4H6"/>',
+  steps: '<path d="M7 20c-1.5 0-2.5-1-2.5-2.5S6 14 7 12s.5-5 2.5-5S12 9 11.5 12 10 20 7 20zM15 17c-1.2 0-2-.8-2-2s1.2-3 2-4.5.4-4 2-4 2.5 2 2 4.5S17.5 17 15 17z"/>',
+  cab: '<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/>',
+  grades: '<path d="M5 20V10M12 20V4M19 20v-7"/>',
+  students: '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.6-3 2.7-4.5 5.5-4.5s4.9 1.5 5.5 4.5"/><circle cx="17" cy="9.5" r="2.4"/><path d="M16 14.6c2.6-.2 4.1 1.2 4.7 3.6"/>',
+  months: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/>'
+};
+var ITEMS = {
+  book: ['w1_read','w1_talk','w2_read','w2_talk','w3_read','w3_talk','test','exam2'],
+  edu: ['e1','e2','e3','e4','e5','e6','ent'],
+  english: ['w1','w2','w3','exam'],
+  speech: ['exam'],
+  sport: ['w1','w2','w3','w4']
+};
+
+/* ===================== состояние ===================== */
+var sb = supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true } });
+var S = { lang: 'ru', uid: null, admin: false, mg: [], tg: [], nav: 'me', tab: 'schedule', dtab: 'schedule', period: null, gsel: null, gsub: 'book', sel: null, q: '', pwdOpen: false, resetAsk: false, busy: false, loggedIn: false, loginErr: '' };
+var D = { profiles: {}, students: {}, mgroups: [], egroups: [], periods: [], books: [], slots: [], idp: {}, scores: {} };
+try { var sv = localStorage.getItem('mu-lang'); if (sv === 'ru' || sv === 'kk') S.lang = sv; } catch (e) {}
+
+function t(k) { return I18N[S.lang][k] != null ? I18N[S.lang][k] : k; }
+function el(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function fmt(v) { return v == null ? '—' : (Math.round(v * 10) / 10).toString().replace('.', ','); }
+function num(v) { return v == null ? null : Number(v); }
+function avg(list) {
+  var x = list.filter(function (v) { return v != null; });
+  return x.length ? x.reduce(function (s, v) { return s + v; }, 0) / x.length : null;
+}
+function pname(id) { var p = D.profiles[id]; return p ? p.full_name : '—'; }
+function byName(a, b) { return pname(a.id).localeCompare(pname(b.id), 'ru'); }
+function hhmm(s) { return String(s || '').slice(0, 5); }
+var toastTimer;
+function toast(msg) { var n = el('toast'); n.textContent = msg; n.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(function () { n.classList.remove('on'); }, 2400); }
+
+/* ===================== данные ===================== */
+async function fetchAll(table, build) {
+  var all = [], from = 0, step = 1000;
+  for (;;) {
+    var q = sb.from(table).select('*');
+    if (build) q = build(q);
+    q = q.range(from, from + step - 1);
+    var r = await q;
+    if (r.error) throw r.error;
+    all = all.concat(r.data);
+    if (r.data.length < step) break;
+    from += step;
+  }
+  return all;
+}
+async function loadAll() {
+  var r = await Promise.all([
+    fetchAll('profiles', function (q) { return q.order('id'); }),
+    fetchAll('students', function (q) { return q.order('id'); }),
+    fetchAll('mentor_groups', function (q) { return q.order('id'); }),
+    fetchAll('english_groups', function (q) { return q.order('id'); }),
+    fetchAll('periods', function (q) { return q.order('code'); }),
+    fetchAll('books', function (q) { return q.order('period_id').order('course'); }),
+    fetchAll('schedule_slots', function (q) { return q.order('id'); }),
+    fetchAll('idp_notes', function (q) { return q.order('student_id'); })
+  ]);
+  D.profiles = {}; r[0].forEach(function (p) { D.profiles[p.id] = p; });
+  D.students = {}; r[1].forEach(function (s) { D.students[s.id] = s; });
+  D.mgroups = r[2]; D.egroups = r[3]; D.periods = r[4]; D.books = r[5]; D.slots = r[6];
+  D.idp = {}; r[7].forEach(function (n) { D.idp[n.student_id] = n; });
+  D.scores = {};
+  var me = D.profiles[S.uid];
+  S.admin = !!(me && me.is_admin);
+  S.mg = D.mgroups.filter(function (g) { return g.mentor_id === S.uid; });
+  S.tg = D.egroups.filter(function (g) { return g.teacher_id === S.uid; });
+  var now = new Date(), code = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2);
+  var cur = D.periods.filter(function (p) { return p.code === code; })[0] || D.periods[D.periods.length - 1];
+  S.period = cur ? cur.id : null;
+  await loadScores(S.period);
+}
+async function loadScores(pid) {
+  if (pid == null || D.scores[pid]) return;
+  var rows = await fetchAll('scores', function (q) { return q.eq('period_id', pid).order('student_id').order('subject').order('item'); });
+  var m = {};
+  rows.forEach(function (r) { m[r.student_id + '|' + r.subject + '|' + r.item] = Number(r.value); });
+  D.scores[pid] = m;
+}
+function curPeriod() { return D.periods.filter(function (p) { return p.id === S.period; })[0]; }
+function getScore(sid, subj, item) {
+  var m = D.scores[S.period]; if (!m) return null;
+  var v = m[sid + '|' + subj + '|' + item]; return v == null ? null : v;
+}
+function bookFor(course) {
+  return D.books.filter(function (b) { return b.period_id === S.period && b.course === course; })[0] || null;
+}
+/* то же правило, что в базе: итог появляется, когда выставлены все экзамены */
+function calc(sid, subj) {
+  var P = curPeriod(), wk, ex, need, ww, we;
+  if (!P) return { weekly: null, exams: [], examAvg: null, total: null, ww: 0, we: 0, any: false };
+  if (subj === 'book') { wk = ITEMS.book.slice(0, 6); ex = ['test', 'exam2']; need = 2; ww = P.w_book_weekly; we = P.w_book_exam; }
+  else if (subj === 'edu') { wk = ITEMS.edu.slice(0, 6); ex = ['ent']; need = 1; ww = P.w_edu_weekly; we = P.w_edu_exam; }
+  else { wk = ['w1', 'w2', 'w3']; ex = ['exam']; need = 1; ww = P.w_eng_weekly; we = P.w_eng_exam; }
+  ww = Number(ww); we = Number(we);
+  var weekly = avg(wk.map(function (i) { return getScore(sid, subj, i); }));
+  var exams = ex.map(function (i) { return getScore(sid, subj, i); });
+  var done = exams.filter(function (v) { return v != null; }).length;
+  var examAvg = avg(exams), any = weekly != null || done > 0, total = null;
+  if (any && !(we > 0 && done < need)) total = (weekly == null ? 0 : weekly) * ww + (examAvg == null ? 0 : examAvg) * we;
+  return { weekly: weekly, exams: exams, examAvg: examAvg, total: total, ww: ww, we: we, any: any };
+}
+async function saveScore(sid, subj, item, val) {
+  var pid = S.period, key = sid + '|' + subj + '|' + item, had = D.scores[pid][key] != null, r;
+  if (val == null) {
+    r = await sb.from('scores').delete().match({ student_id: sid, period_id: pid, subject: subj, item: item }).select();
+    if (!r.error && had && (!r.data || !r.data.length)) r = { error: { message: 'denied' } };
+  } else {
+    r = await sb.from('scores').upsert({ student_id: sid, period_id: pid, subject: subj, item: item, value: val, entered_by: S.uid, updated_at: new Date().toISOString() }, { onConflict: 'student_id,period_id,subject,item' }).select();
+  }
+  if (r.error) { toast(t('saveErr')); return false; }
+  if (val == null) delete D.scores[pid][key]; else D.scores[pid][key] = val;
+  return true;
+}
+
+/* ===================== права (для интерфейса; настоящая защита — в базе) ===================== */
+function editable(stu, subj) {
+  var P = curPeriod();
+  if (S.admin) return true;
+  if (!P || P.locked) return false;
+  var mg = D.mgroups.filter(function (g) { return g.id === stu.mentor_group_id; })[0];
+  var eg = D.egroups.filter(function (g) { return g.id === stu.english_group_id; })[0];
+  var isMentor = mg && mg.mentor_id === S.uid;
+  if (subj === 'english') return !!((eg && eg.teacher_id === S.uid) || (!eg && isMentor));
+  return !!isMentor;
+}
+function isStaff() { return S.admin || S.mg.length > 0 || S.tg.length > 0; }
+function cabinetTabs(stu) {
+  if (stu.kind === 'special') return ['eng', 'spec', 'steps', 'idp'];
+  if (!stu.takes_book_edu) return ['schedule', 'eng'];
+  return ['schedule', 'book', 'edu', 'eng', 'idp'];
+}
+function tabLabel(stu, k) { return k === 'spec' ? (stu.special_subject || t('edu')) : t(k); }
+function groupName(list, id) { var g = list.filter(function (x) { return x.id === id; })[0]; return g ? g.name : null; }
+
+/* ===================== элементы ===================== */
+function row(label, v) {
+  return '<div class="row"><span>' + label + '</span><span class="bar"><i style="width:' + (v == null ? 0 : v) + '%"></i></span><span class="val' + (v == null ? ' none' : '') + '">' + fmt(v) + '</span></div>';
+}
+function ring(v) {
+  var C = 2 * Math.PI * 54, off = v == null ? C : C * (1 - Math.min(100, v) / 100);
+  return '<svg class="ring" viewBox="0 0 140 140" role="img" aria-label="' + fmt(v) + '"><circle class="trk" cx="70" cy="70" r="54"/><circle class="arc" cx="70" cy="70" r="54" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 70 70)"/><text x="70" y="80" text-anchor="middle">' + fmt(v) + '</text></svg>';
+}
+function totalCard(cls, c, isEng) {
+  var note = c.total != null ? '' : (c.any ? t('waitExam') : t('noScores'));
+  return '<section class="card total ' + cls + '"><p class="kicker">' + t('total') + '</p>' + ring(c.total) +
+    (note ? '<div class="pending c">' + note + '</div>' : '') +
+    '<div class="stats"><div><b>' + fmt(c.weekly) + '</b><span>' + (isEng ? t('attendance') : t('weeksLbl')) + '</span></div><div><b>' + fmt(c.examAvg) + '</b><span>' + t('examsLbl') + '</span></div>' +
+    '<div><b>' + Math.round(c.ww * 100) + '/' + Math.round(c.we * 100) + '</b><span>%</span></div></div></section>';
+}
+
+/* ===================== кабинет студента ===================== */
+function viewSchedule(stu) {
+  var jsDay = new Date().getDay(), today = jsDay === 0 ? 7 : jsDay;
+  var mine = D.slots.filter(function (s) {
+    if (s.kind === 'book_edu') return stu.takes_book_edu && s.course === stu.course && s.gender === stu.gender && (!s.sub_group || s.sub_group === stu.sub_group);
+    return stu.english_group_id != null && s.english_group_id === stu.english_group_id;
+  }).sort(function (a, b) { return a.weekday - b.weekday || String(a.start_time).localeCompare(String(b.start_time)); });
+  var out = '';
+  for (var d = 1; d <= 7; d++) {
+    var items = mine.filter(function (s) { return s.weekday === d; });
+    out += '<section class="day' + (d === today ? ' is-today' : '') + '"><div class="dayhead"><h3>' + DAYS[S.lang][d - 1] + '</h3>' + (d === today ? '<span class="today">' + t('today') + '</span>' : '') + '</div>';
+    if (!items.length) out += '<div class="free">' + t('noClass') + '</div>';
+    items.forEach(function (s) {
+      out += '<div class="slot"><div class="time">' + hhmm(s.start_time) + '<small>' + hhmm(s.end_time) + '</small></div><div><div class="t">' + esc(s.title) + '</div><span class="tag ' + (s.kind === 'english' ? 'eng' : 'be') + '">' + (s.kind === 'english' ? t('eng') : esc(s.note || '')) + '</span></div></div>';
+    });
+    out += '</section>';
+  }
+  return '<div class="card">' + out + '</div><p class="note">' + t('examNote') + '</p>';
+}
+function viewBook(stu) {
+  var c = calc(stu.id, 'book'), b = bookFor(stu.course), id = stu.id;
+  var out = totalCard('c-book', c, false);
+  if (b && b.title) out += '<section class="card c-book"><p class="kicker">' + t('bookOf') + '</p><h2>«' + esc(b.title) + '» · ' + stu.course + ' ' + t('course') + '</h2></section>';
+  for (var w = 1; w <= 3; w++) out += '<section class="card c-book"><p class="kicker">' + t('week') + ' ' + w + '</p>' + row(t('read'), getScore(id, 'book', 'w' + w + '_read')) + row(t('talk'), getScore(id, 'book', 'w' + w + '_talk')) + '</section>';
+  out += '<section class="card c-book"><p class="kicker">' + t('examweek') + '</p>' + row(t('test'), getScore(id, 'book', 'test')) + row(t(b && b.exam2_type ? b.exam2_type : 'exam2'), getScore(id, 'book', 'exam2')) + '</section>';
+  return out;
+}
+function viewEdu(stu) {
+  var c = calc(stu.id, 'edu'), out = totalCard('c-edu', c, false);
+  for (var w = 0; w < 3; w++) out += '<section class="card c-edu"><p class="kicker">' + t('week') + ' ' + (w + 1) + '</p>' + row(t('etude') + ' ' + (w * 2 + 1), getScore(stu.id, 'edu', 'e' + (w * 2 + 1))) + row(t('etude') + ' ' + (w * 2 + 2), getScore(stu.id, 'edu', 'e' + (w * 2 + 2))) + '</section>';
+  return out + '<section class="card c-edu"><p class="kicker">' + t('examweek') + '</p>' + row(t('ent'), getScore(stu.id, 'edu', 'ent')) + '</section>';
+}
+function viewEng(stu) {
+  var c = calc(stu.id, 'english'), out = totalCard('c-eng', c, true), gn = groupName(D.egroups, stu.english_group_id);
+  if (gn) out += '<section class="card c-eng"><p class="kicker">' + t('group') + '</p><h2>' + esc(gn) + '</h2></section>';
+  var att = ''; for (var w = 1; w <= 3; w++) att += row(t('week') + ' ' + w, getScore(stu.id, 'english', 'w' + w));
+  return out + '<section class="card c-eng"><p class="kicker">' + t('attendance') + '</p>' + att + '</section><section class="card c-eng"><p class="kicker">' + t('examweek') + '</p>' + row(t('exam'), getScore(stu.id, 'english', 'exam')) + '</section>';
+}
+function viewSpec(stu) {
+  var v = getScore(stu.id, 'speech', 'exam');
+  return '<section class="card total c-edu"><p class="kicker">' + esc(stu.special_subject || t('edu')) + '</p>' + ring(v) + (v == null ? '<div class="pending c">' + t('noScores') + '</div>' : '') + '</section>' +
+    '<section class="card c-edu"><p class="kicker">' + t('monthExam') + '</p>' + row(t('exam'), v) + '</section>';
+}
+function pmBtn(sid, item, v, editableFlag, label) {
+  var cls = v === 1 ? 'plus' : (v === 0 ? 'minus' : '');
+  return '<button type="button" class="pm ' + cls + '" ' + (editableFlag ? 'data-a="sport" data-sid="' + sid + '" data-item="' + item + '"' : 'disabled') + '><small>' + label + '</small>' + (v === 1 ? '+' : v === 0 ? '−' : '·') + '</button>';
+}
+function viewSteps(stu, ed) {
+  var h = '';
+  for (var w = 1; w <= 4; w++) h += pmBtn(stu.id, 'w' + w, getScore(stu.id, 'sport', 'w' + w), ed, t('stepsWeek') + ' ' + w);
+  return '<section class="card c-book"><p class="kicker">' + t('steps') + '</p><div class="pmrow">' + h + '</div><p class="note">' + t('goal') + '</p></section>';
+}
+function viewIdp(stu, ed) {
+  if (stu.kind === 'special') {
+    var n = D.idp[stu.id], txt = n ? n.content : '';
+    if (ed) return '<section class="card"><p class="kicker">' + t('idpSite') + '</p><textarea class="t" id="idpText">' + esc(txt) + '</textarea><div><button type="button" class="solid pink" data-a="idpsave" data-sid="' + stu.id + '">' + t('save') + '</button></div></section>';
+    return '<section class="card"><p class="kicker">' + t('idpSite') + '</p>' + (txt ? '<p class="idp-text">' + esc(txt) + '</p>' : '<p class="note">' + t('idpEmpty') + '</p>') + '</section>';
+  }
+  if (stu.notion_url) return '<section class="card"><p class="kicker">IDP</p><h2>Notion</h2><p class="note">' + t('idpTitle') + '</p><div><a class="cta" href="' + esc(stu.notion_url) + '" target="_blank" rel="noopener">' + t('openNotion') + ' ↗</a></div></section>';
+  return '<section class="card"><p class="kicker">IDP</p><h2>Notion</h2><p class="note">' + t('idpNoLink') + '</p></section>';
+}
+function studentBody(stu, tab, staffView) {
+  var ed = function (s) { return staffView && editable(stu, s); };
+  switch (tab) {
+    case 'schedule': return viewSchedule(stu);
+    case 'book': return viewBook(stu);
+    case 'edu': return viewEdu(stu);
+    case 'eng': return viewEng(stu);
+    case 'spec': return viewSpec(stu);
+    case 'steps': return viewSteps(stu, ed('sport'));
+    case 'idp': return viewIdp(stu, ed('book'));
+  }
+  return '';
+}
+function studentChips(stu) {
+  var h = '';
+  if (stu.course) h += '<span class="chip">' + stu.course + ' ' + t('course') + ' · ' + (stu.gender === 'M' ? t('boys') : t('girls')) + '</span>';
+  var mgn = groupName(D.mgroups, stu.mentor_group_id), egn = groupName(D.egroups, stu.english_group_id);
+  if (egn) h += '<span class="chip eng">' + esc(egn) + '</span>';
+  if (stu.funding && stu.funding !== 'mentor') h += '<span class="chip book">' + t({ grant: 'grant', opportunity: 'opportunity', mentor: 'mentorF' }[stu.funding]) + '</span>';
+  if (stu.status !== 'active') h += '<span class="chip warn">' + t(stu.status) + '</span>';
+  return h;
+}
+
+/* ===================== оценки: таблицы ===================== */
+function colsFor(subj, course) {
+  var c = [], i;
+  if (subj === 'book') {
+    for (i = 1; i <= 3; i++) { c.push({ item: 'w' + i + '_read', label: i + '·' + t('rd') }); c.push({ item: 'w' + i + '_talk', label: i + '·' + t('tk') }); }
+    var b = bookFor(course);
+    c.push({ item: 'test', label: t('test'), sep: true }); c.push({ item: 'exam2', label: t(b && b.exam2_type ? b.exam2_type : 'exam2') });
+  } else if (subj === 'edu') {
+    for (i = 1; i <= 6; i++) c.push({ item: 'e' + i, label: t('et') + i });
+    c.push({ item: 'ent', label: 'ЕНТ', sep: true });
+  } else {
+    for (i = 1; i <= 3; i++) c.push({ item: 'w' + i, label: t('wk') + i });
+    c.push({ item: 'exam', label: t('exam'), sep: true });
+  }
+  return c;
+}
+function gridHtml(list, subj, course) {
+  var cols = colsFor(subj, course);
+  if (!list.length) return '<p class="note">' + t('noStudents') + '</p>';
+  var h = '<div class="gwrap"><table class="g"><thead><tr><th></th>' + cols.map(function (c) { return '<th' + (c.sep ? ' class="sep"' : '') + '>' + esc(c.label) + '</th>'; }).join('') + '<th class="sep">' + t('sum') + '</th></tr></thead><tbody>';
+  list.forEach(function (stu) {
+    var ed = editable(stu, subj), tot = calc(stu.id, subj).total;
+    h += '<tr' + (stu.status !== 'active' ? ' class="dim"' : '') + '><td><button type="button" data-a="open" data-sid="' + stu.id + '">' + esc(pname(stu.id)) + '</button></td>';
+    cols.forEach(function (c) {
+      var v = getScore(stu.id, subj, c.item);
+      h += '<td' + (c.sep ? ' class="sep"' : '') + '><input class="cell" inputmode="decimal" autocomplete="off" data-sid="' + stu.id + '" data-subj="' + subj + '" data-item="' + c.item + '" value="' + (v == null ? '' : v) + '"' + (ed ? '' : ' disabled') + '></td>';
+    });
+    h += '<td class="tot sep" data-tot="' + stu.id + '|' + subj + '">' + fmt(tot) + '</td></tr>';
+  });
+  return h + '</tbody></table></div>';
+}
+function groupOptions() {
+  var opts = [];
+  var mg = S.admin ? D.mgroups : S.mg, eg = S.admin ? D.egroups : S.tg;
+  mg.forEach(function (g) { opts.push({ v: 'm:' + g.id, label: g.name + ' · ' + (g.gender === 'M' ? t('boys') : t('girls')) }); });
+  eg.forEach(function (g) { opts.push({ v: 'e:' + g.id, label: 'EN · ' + g.name }); });
+  return opts;
+}
+function groupStudents(sel) {
+  var id = Number(sel.slice(2));
+  return Object.keys(D.students).map(function (k) { return D.students[k]; }).filter(function (s) {
+    return sel[0] === 'm' ? s.mentor_group_id === id : s.english_group_id === id;
+  }).sort(byName);
+}
+function specialCards(list) {
+  var sp = list.filter(function (s) { return s.kind === 'special'; }), out = '';
+  sp.forEach(function (stu) {
+    var edM = editable(stu, 'book'), v = getScore(stu.id, 'speech', 'exam'), h = '';
+    for (var w = 1; w <= 4; w++) h += pmBtn(stu.id, 'w' + w, getScore(stu.id, 'sport', 'w' + w), edM, t('stepsWeek') + ' ' + w);
+    var n = D.idp[stu.id];
+    out += '<section class="card"><h2>' + esc(pname(stu.id)) + '</h2>' +
+      '<p class="kicker">' + esc(stu.special_subject || t('edu')) + ' · ' + t('monthExam') + '</p>' +
+      '<div><input class="cell" inputmode="decimal" data-sid="' + stu.id + '" data-subj="speech" data-item="exam" value="' + (v == null ? '' : v) + '"' + (edM ? '' : ' disabled') + '></div>' +
+      '<p class="kicker">' + t('steps') + '</p><div class="pmrow">' + h + '</div>' +
+      '<p class="kicker">' + t('idpSite') + '</p><textarea class="t" id="idp-' + stu.id + '"' + (edM ? '' : ' disabled') + '>' + esc(n ? n.content : '') + '</textarea>' +
+      (edM ? '<div><button type="button" class="solid pink" data-a="idpsave" data-sid="' + stu.id + '">' + t('save') + '</button></div>' : '') + '</section>';
+  });
+  return out;
+}
+function viewGrades() {
+  var opts = groupOptions();
+  if (!opts.length) return '<p class="note">' + t('noRights') + '</p>';
+  if (!opts.some(function (o) { return o.v === S.gsel; })) S.gsel = opts[0].v;
+  var list = groupStudents(S.gsel), isM = S.gsel[0] === 'm', P = curPeriod();
+  var out = '<label class="f">' + t('group') + '<select class="t" id="gsel">' + opts.map(function (o) { return '<option value="' + o.v + '"' + (o.v === S.gsel ? ' selected' : '') + '>' + esc(o.label) + '</option>'; }).join('') + '</select></label>';
+  if (P && P.locked) out += '<p class="note">🔒 ' + (S.admin ? t('monthLocked') : t('locked')) + '</p>';
+  var subs = isM ? ['book', 'edu', 'english'] : ['english'];
+  if (isM && list.some(function (s) { return s.kind === 'special'; })) subs.push('special');
+  if (subs.indexOf(S.gsub) < 0) S.gsub = subs[0];
+  if (subs.length > 1) out += '<div class="seg wide" role="group">' + subs.map(function (k) { return '<button type="button" data-gsub="' + k + '" aria-pressed="' + (S.gsub === k) + '">' + (k === 'special' ? t('specials') : k === 'english' ? t('eng') : t(k)) + '</button>'; }).join('') + '</div>';
+  var course = list.length ? list[0].course : null;
+  if (S.gsub === 'special') out += specialCards(list);
+  else {
+    var shown = list;
+    if (S.gsub !== 'english') shown = list.filter(function (s) { return s.kind !== 'special' && s.takes_book_edu; });
+    out += gridHtml(shown, S.gsub, course);
+    if (S.gsub === 'english' && isM && list.some(function (s) { return !editable(s, 'english'); }) && !S.admin) out += '<p class="note">' + t('readonly') + '</p>';
+  }
+  return out;
+}
+
+/* ===================== студенты (админ) ===================== */
+function viewStudents() {
+  var q = S.q.trim().toLowerCase();
+  var list = Object.keys(D.students).map(function (k) { return D.students[k]; }).sort(byName).filter(function (s) { return !q || pname(s.id).toLowerCase().indexOf(q) >= 0 || (D.profiles[s.id].username || '').indexOf(q) >= 0; });
+  var h = '<input class="t" id="q" type="search" placeholder="' + t('search') + '" value="' + esc(S.q) + '"><div class="list" id="slist">' + studentList(list) + '</div><p class="note">' + t('adminOnlyNote') + '</p>';
+  return h;
+}
+function studentList(list) {
+  if (!list.length) return '<p class="note">' + t('noStudents') + '</p>';
+  return list.map(function (s) {
+    var b = calc(s.id, 'book').total, e = calc(s.id, 'edu').total, g = calc(s.id, 'english').total;
+    var meta = [s.course ? s.course + ' ' + t('course') : '', groupName(D.egroups, s.english_group_id) || ''].filter(Boolean).join(' · ');
+    return '<button type="button" class="li' + (s.status !== 'active' ? ' dim' : '') + '" data-a="open" data-sid="' + s.id + '"><span><span class="n">' + esc(pname(s.id)) + '</span><br><span class="m">' + esc(meta) + '</span></span>' +
+      '<span class="mini">' + (b != null ? '<span class="b">' + fmt(b) + '</span>' : '') + (e != null ? '<span class="e">' + fmt(e) + '</span>' : '') + (g != null ? '<span class="g">' + fmt(g) + '</span>' : '') + '</span></button>';
+  }).join('');
+}
+function adminPanel(stu) {
+  var p = D.profiles[stu.id];
+  function opt(v, label, cur) { return '<option value="' + v + '"' + (String(cur) === String(v) ? ' selected' : '') + '>' + esc(label) + '</option>'; }
+  var h = '<section class="card"><p class="kicker">' + t('admin') + ' · ' + esc(p.username) + '</p><div class="grid2">' +
+    '<label class="f">' + t('status') + '<select class="t" id="f-status">' + ['active', 'academic_leave', 'left'].map(function (x) { return opt(x, t(x), stu.status); }).join('') + '</select></label>' +
+    '<label class="f">' + t('funding') + '<select class="t" id="f-funding">' + opt('', t('none'), stu.funding || '') + ['grant', 'opportunity', 'mentor'].map(function (x) { return opt(x, t({ grant: 'grant', opportunity: 'opportunity', mentor: 'mentorF' }[x]), stu.funding); }).join('') + '</select></label>' +
+    '<label class="f">' + t('mentorGroup') + '<select class="t" id="f-mg">' + opt('', t('none'), stu.mentor_group_id || '') + D.mgroups.map(function (g) { return opt(g.id, g.name, stu.mentor_group_id); }).join('') + '</select></label>' +
+    '<label class="f">' + t('engGroup') + '<select class="t" id="f-eg">' + opt('', t('none'), stu.english_group_id || '') + D.egroups.map(function (g) { return opt(g.id, g.name, stu.english_group_id); }).join('') + '</select></label>' +
+    '<label class="f">' + t('courseF') + '<input class="t" id="f-course" inputmode="numeric" value="' + esc(stu.course == null ? '' : stu.course) + '"></label>' +
+    '<label class="f">' + t('subGroup') + '<input class="t" id="f-sub" value="' + esc(stu.sub_group || '') + '"></label></div>' +
+    '<label class="f">' + t('notion') + '<input class="t" id="f-notion" inputmode="url" value="' + esc(stu.notion_url || '') + '"></label>' +
+    '<div class="btns"><button type="button" class="solid pink" data-a="stusave" data-sid="' + stu.id + '">' + t('save') + '</button>' +
+    (S.resetAsk === stu.id ? '<button type="button" class="ghost danger" data-a="resetyes" data-sid="' + stu.id + '">' + t('resetYes') + '</button><button type="button" class="ghost" data-a="resetno">' + t('cancel') + '</button>' : '<button type="button" class="ghost" data-a="resetask" data-sid="' + stu.id + '">' + t('resetPw') + '</button>') + '</div>' +
+    (S.resetAsk === stu.id ? '<p class="note">' + t('resetAsk') + '</p>' : '') + '</section>';
+  return h;
+}
+function viewDetail() {
+  var stu = D.students[S.sel];
+  if (!stu) { S.sel = null; return ''; }
+  var tabs = cabinetTabs(stu);
+  if (tabs.indexOf(S.dtab) < 0) S.dtab = tabs[0];
+  var h = '<button type="button" class="ghost back" data-a="back">' + t('back') + '</button><div><h1>' + esc(pname(stu.id)) + '</h1><div class="chips">' + studentChips(stu) + '</div></div>';
+  if (S.admin) h += adminPanel(stu);
+  h += '<div class="seg scroll" role="group">' + tabs.map(function (k) { return '<button type="button" data-dtab="' + k + '" aria-pressed="' + (S.dtab === k) + '">' + esc(tabLabel(stu, k)) + '</button>'; }).join('') + '</div>';
+  return h + studentBody(stu, S.dtab, true);
+}
+
+/* ===================== месяцы (админ) ===================== */
+function viewMonths() {
+  return D.periods.map(function (p) {
+    var h = '<section class="card" data-pid="' + p.id + '"><h2>' + esc(S.lang === 'kk' ? p.name_kk : p.name_ru) + '</h2><p class="kicker">' + t('weights') + '</p><div class="grid2">' +
+      [['book', 'wBook'], ['edu', 'wEdu'], ['eng', 'wEng']].map(function (x) {
+        return '<label class="f">' + t(x[1]) + '<input class="t" inputmode="numeric" data-w="' + x[0] + '" value="' + Math.round(Number(p['w_' + x[0] + '_exam']) * 100) + '"></label>';
+      }).join('') + '</div><label class="f" style="display:flex;gap:8px;align-items:center"><input type="checkbox" data-lock' + (p.locked ? ' checked' : '') + '> ' + t('lockMonth') + '</label><p class="kicker">' + t('books') + '</p>';
+    [1, 2, 3, 4].forEach(function (c) {
+      var b = D.books.filter(function (x) { return x.period_id === p.id && x.course === c; })[0] || {};
+      h += '<div class="grid2"><label class="f">' + c + ' ' + t('course') + ' · ' + t('bookTitle') + '<input class="t" data-bt="' + c + '" value="' + esc(b.title || '') + '"></label>' +
+        '<label class="f">' + t('exam2type') + '<select class="t" data-be="' + c + '"><option value="essay"' + (b.exam2_type !== 'presentation' ? ' selected' : '') + '>' + t('essay') + '</option><option value="presentation"' + (b.exam2_type === 'presentation' ? ' selected' : '') + '>' + t('presentation') + '</option></select></label></div>';
+    });
+    return h + '<div><button type="button" class="solid pink" data-a="monsave" data-pid="' + p.id + '">' + t('save') + '</button></div></section>';
+  }).join('');
+}
+
+/* ===================== вход ===================== */
+function viewLogin() {
+  return '<form class="card login" id="loginForm"><h2>' + t('loginTitle') + '</h2>' +
+    '<label class="f">' + t('username') + '<input class="t" id="lu" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"></label>' +
+    '<label class="f">' + t('password') + '<input class="t" id="lp" type="password" autocomplete="current-password"></label>' +
+    '<p class="err" id="lerr">' + esc(S.loginErr) + '</p><button class="solid pink" type="submit">' + t('enter') + '</button><p class="note">' + t('loginHint') + '</p></form>';
+}
+
+/* ===================== каркас ===================== */
+function navKeys() {
+  var me = D.students[S.uid];
+  if (!isStaff()) return me ? cabinetTabs(me) : [];
+  var k = []; if (me) k.push('me'); k.push('grades'); if (S.admin) { k.push('students'); k.push('months'); }
+  return k;
+}
+function curKey() { return isStaff() ? S.nav : S.tab; }
+function heroClass() {
+  var k = S.sel ? S.dtab : (isStaff() && S.nav === 'me' || !isStaff() ? S.tab : '');
+  return 'hero ' + ({ book: 'c-book', edu: 'c-edu', spec: 'c-edu', eng: 'c-eng', steps: 'c-book' }[k] || (S.gsel && S.nav === 'grades' ? { book: 'c-book', edu: 'c-edu', english: 'c-eng' }[S.gsub] || '' : ''));
+}
+function roleChips() {
+  var h = '';
+  if (S.admin) h += '<span class="chip warn">' + t('admin') + '</span>';
+  if (S.mg.length) h += '<span class="chip book">' + t('mentor') + '</span>';
+  if (S.tg.length) h += '<span class="chip eng">' + t('teacher') + '</span>';
+  var me = D.students[S.uid]; if (me) h += studentChips(me);
+  return h;
+}
+function render() {
+  document.documentElement.lang = S.lang;
+  document.querySelectorAll('[data-lang]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === S.lang)); });
+  var view = el('view');
+  if (!S.loggedIn) {
+    el('who').hidden = true; el('navwrap').hidden = true; el('periodbar').hidden = true; el('innerbar').innerHTML = '';
+    el('hero').className = 'hero'; view.innerHTML = viewLogin(); return;
+  }
+  var meP = D.profiles[S.uid] || {};
+  el('who').hidden = false; el('name').textContent = meP.full_name || '';
+  el('chips').innerHTML = roleChips();
+  el('panel').innerHTML = '<div class="kv"><span>' + t('login') + '</span><span>' + esc(meP.username) + '</span></div>' +
+    (S.pwdOpen ? '<label class="f">' + t('newPwd') + '<input class="t" id="np" type="password" autocomplete="new-password"></label><div class="btns"><button type="button" class="solid pink" data-a="pwdsave">' + t('save') + '</button><button type="button" class="ghost" data-a="pwd">' + t('cancel') + '</button></div>' :
+      '<div class="btns"><button type="button" class="ghost" data-a="pwd">' + t('changePwd') + '</button><button type="button" class="ghost" data-a="out">' + t('logout') + '</button></div>');
+
+  var keys = navKeys(), cur = curKey();
+  el('navwrap').hidden = keys.length < 2;
+  el('tabs').innerHTML = keys.map(function (k) {
+    var me = D.students[S.uid], lab = (!isStaff() && me) ? tabLabel(me, k) : t(k === 'me' ? 'cab' : k);
+    return '<button type="button" data-nav="' + k + '"' + (cur === k ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" aria-hidden="true">' + (ICONS[k === 'me' ? 'cab' : k] || '') + '</svg><span>' + esc(lab) + '</span></button>';
+  }).join('');
+
+  var inner = '', body = '', showPeriod = false, me2 = D.students[S.uid];
+  if (S.sel) { body = viewDetail(); showPeriod = true; }
+  else if (isStaff()) {
+    if (S.nav === 'me' && me2) {
+      var tb = cabinetTabs(me2); if (tb.indexOf(S.tab) < 0) S.tab = tb[0];
+      inner = '<div class="seg scroll" role="group">' + tb.map(function (k) { return '<button type="button" data-tab="' + k + '" aria-pressed="' + (S.tab === k) + '">' + esc(tabLabel(me2, k)) + '</button>'; }).join('') + '</div>';
+      body = studentBody(me2, S.tab, false); showPeriod = ['book', 'edu', 'eng', 'spec', 'steps'].indexOf(S.tab) >= 0;
+    } else if (S.nav === 'grades') { body = viewGrades(); showPeriod = true; }
+    else if (S.nav === 'students') { body = viewStudents(); showPeriod = true; }
+    else if (S.nav === 'months') body = viewMonths();
+  } else if (me2) {
+    var tb2 = cabinetTabs(me2); if (tb2.indexOf(S.tab) < 0) S.tab = tb2[0];
+    body = studentBody(me2, S.tab, false); showPeriod = ['book', 'edu', 'eng', 'spec', 'steps'].indexOf(S.tab) >= 0;
+  } else body = '<p class="note">' + t('noRights') + '</p>';
+  el('innerbar').innerHTML = inner;
+  el('hero').className = heroClass();
+  var pb = el('periodbar'); pb.hidden = !showPeriod;
+  pb.innerHTML = D.periods.map(function (p) { return '<button type="button" data-period="' + p.id + '" aria-pressed="' + (S.period === p.id) + '">' + esc(S.lang === 'kk' ? p.name_kk : p.name_ru) + '</button>'; }).join('');
+  view.innerHTML = body;
+}
+async function go() { try { await loadScores(S.period); } catch (e) { toast(t('loadErr')); } render(); }
+
+/* ===================== действия ===================== */
+async function afterLogin(user) {
+  S.uid = user.id; S.loggedIn = true; el('view').innerHTML = '<p class="note">' + t('loading') + '</p>';
+  try { await loadAll(); } catch (e) { toast(t('loadErr')); console.error(e); }
+  var keys = navKeys(); S.nav = keys[0] || 'me'; S.tab = (D.students[S.uid] ? cabinetTabs(D.students[S.uid])[0] : 'schedule');
+  render();
+}
+document.addEventListener('submit', async function (e) {
+  if (e.target.id !== 'loginForm') return;
+  e.preventDefault();
+  var u = el('lu').value.trim().toLowerCase(), p = el('lp').value;
+  if (!u || !p) return;
+  var email = u.indexOf('@') > 0 ? u : u + '@' + DOMAIN;
+  el('lerr').textContent = '';
+  var r = await sb.auth.signInWithPassword({ email: email, password: p });
+  if (r.error) { S.loginErr = t('badLogin'); el('lerr').textContent = S.loginErr; return; }
+  S.loginErr = ''; afterLogin(r.data.user);
+});
+function readNum(raw) {
+  raw = String(raw).trim().replace(',', '.');
+  if (raw === '') return { ok: true, v: null };
+  var n = Number(raw);
+  if (!isFinite(n) || n < 0 || n > 100) return { ok: false };
+  return { ok: true, v: Math.round(n * 100) / 100 };
+}
+function refreshTot(sid, subj) {
+  document.querySelectorAll('[data-tot="' + sid + '|' + subj + '"]').forEach(function (c) { c.textContent = fmt(calc(sid, subj).total); });
+}
+document.addEventListener('change', async function (e) {
+  var x = e.target;
+  if (x.id === 'gsel') { S.gsel = x.value; S.gsub = 'book'; render(); return; }
+  if (x.classList && x.classList.contains('cell')) {
+    var sid = x.dataset.sid, subj = x.dataset.subj, item = x.dataset.item, r = readNum(x.value), old = getScore(sid, subj, item);
+    if (!r.ok) { toast(t('badNum')); x.value = old == null ? '' : old; return; }
+    if (r.v === old) { x.value = old == null ? '' : old; return; }
+    var ok = await saveScore(sid, subj, item, r.v);
+    x.value = ok ? (r.v == null ? '' : r.v) : (old == null ? '' : old);
+    if (ok) { refreshTot(sid, subj); }
+  }
+});
+document.addEventListener('input', function (e) {
+  if (e.target.id === 'q') {
+    S.q = e.target.value; var q = S.q.trim().toLowerCase();
+    var list = Object.keys(D.students).map(function (k) { return D.students[k]; }).sort(byName).filter(function (s) { return !q || pname(s.id).toLowerCase().indexOf(q) >= 0 || (D.profiles[s.id].username || '').indexOf(q) >= 0; });
+    el('slist').innerHTML = studentList(list);
+  }
+});
+async function act(b) {
+  var a = b.dataset.a, sid = b.dataset.sid;
+  if (a === 'out') { await sb.auth.signOut(); S.loggedIn = false; S.sel = null; S.pwdOpen = false; render(); return; }
+  if (a === 'pwd') { S.pwdOpen = !S.pwdOpen; render(); return; }
+  if (a === 'pwdsave') {
+    var np = el('np').value;
+    if (np.length < 6) { toast(t('pwdShort')); return; }
+    var r = await sb.auth.updateUser({ password: np });
+    if (r.error) { toast(r.error.message); return; }
+    S.pwdOpen = false; toast(t('pwdOk')); render(); return;
+  }
+  if (a === 'open') { S.sel = sid; S.dtab = cabinetTabs(D.students[sid])[0]; S.resetAsk = false; window.scrollTo(0, 0); render(); return; }
+  if (a === 'back') { S.sel = null; S.resetAsk = false; render(); return; }
+  if (a === 'sport') {
+    var cur = getScore(sid, 'sport', b.dataset.item), nv = cur == null ? 1 : (cur === 1 ? 0 : null);
+    if (await saveScore(sid, 'sport', b.dataset.item, nv)) {
+      document.querySelectorAll('[data-a="sport"][data-sid="' + sid + '"][data-item="' + b.dataset.item + '"]').forEach(function (n) {
+        n.className = 'pm ' + (nv === 1 ? 'plus' : nv === 0 ? 'minus' : ''); n.lastChild.textContent = nv === 1 ? '+' : nv === 0 ? '−' : '·';
+      });
+    }
+    return;
+  }
+  if (a === 'idpsave') {
+    var ta = el('idp-' + sid) || el('idpText'), r2 = await sb.from('idp_notes').upsert({ student_id: sid, content: ta.value, updated_by: S.uid, updated_at: new Date().toISOString() }, { onConflict: 'student_id' }).select();
+    if (r2.error) { toast(t('saveErr')); return; }
+    D.idp[sid] = r2.data[0]; toast(t('saved')); return;
+  }
+  if (a === 'stusave') {
+    var upd = {
+      status: el('f-status').value, funding: el('f-funding').value || null,
+      mentor_group_id: el('f-mg').value ? Number(el('f-mg').value) : null, english_group_id: el('f-eg').value ? Number(el('f-eg').value) : null,
+      course: el('f-course').value.trim() ? Number(el('f-course').value) : null, sub_group: el('f-sub').value.trim() || null, notion_url: el('f-notion').value.trim() || null
+    };
+    var r3 = await sb.from('students').update(upd).eq('id', sid).select();
+    if (r3.error || !r3.data.length) { toast(t('saveErr')); return; }
+    D.students[sid] = r3.data[0]; toast(t('saved')); render(); return;
+  }
+  if (a === 'resetask') { S.resetAsk = sid; render(); return; }
+  if (a === 'resetno') { S.resetAsk = false; render(); return; }
+  if (a === 'resetyes') {
+    var r4 = await sb.rpc('admin_reset_password', { target: sid }); S.resetAsk = false;
+    toast(r4.error ? t('saveErr') : t('resetDone')); render(); return;
+  }
+  if (a === 'monsave') {
+    var pid = Number(b.dataset.pid), card = b.closest('section[data-pid]'), upd2 = { locked: card.querySelector('[data-lock]').checked }, bad = false;
+    card.querySelectorAll('[data-w]').forEach(function (i) {
+      var n = Number(i.value); if (!isFinite(n) || n < 0 || n > 100) { bad = true; return; }
+      upd2['w_' + i.dataset.w + '_exam'] = n / 100; upd2['w_' + i.dataset.w + '_weekly'] = (100 - n) / 100;
+    });
+    if (bad) { toast(t('badNum')); return; }
+    var r5 = await sb.from('periods').update(upd2).eq('id', pid).select();
+    if (r5.error || !r5.data.length) { toast(t('saveErr')); return; }
+    var rows = [1, 2, 3, 4].map(function (c) {
+      return { period_id: pid, course: c, title: card.querySelector('[data-bt="' + c + '"]').value.trim() || null, exam2_type: card.querySelector('[data-be="' + c + '"]').value };
+    });
+    var r6 = await sb.from('books').upsert(rows, { onConflict: 'period_id,course' }).select();
+    if (r6.error) { toast(t('saveErr')); return; }
+    D.periods = D.periods.map(function (p) { return p.id === pid ? r5.data[0] : p; });
+    D.books = D.books.filter(function (x) { return x.period_id !== pid; }).concat(r6.data);
+    toast(t('saved')); return;
+  }
+}
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-a],[data-nav],[data-tab],[data-dtab],[data-gsub],[data-period],[data-lang]');
+  if (!b) return;
+  if (b.dataset.a) { act(b); return; }
+  if (b.dataset.lang) { S.lang = b.dataset.lang; try { localStorage.setItem('mu-lang', S.lang); } catch (x) {} render(); return; }
+  if (b.dataset.nav) { if (isStaff()) S.nav = b.dataset.nav; else S.tab = b.dataset.nav; S.sel = null; window.scrollTo(0, 0); render(); return; }
+  if (b.dataset.tab) { S.tab = b.dataset.tab; render(); return; }
+  if (b.dataset.dtab) { S.dtab = b.dataset.dtab; render(); return; }
+  if (b.dataset.gsub) { S.gsub = b.dataset.gsub; render(); return; }
+  if (b.dataset.period) { S.period = Number(b.dataset.period); go(); return; }
+});
+
+/* ===================== запуск ===================== */
+(async function () {
+  render();
+  try {
+    var r = await sb.auth.getSession();
+    if (r.data && r.data.session) await afterLogin(r.data.session.user);
+  } catch (e) { console.error(e); }
+})();
+</script>
+</body>
+</html>
